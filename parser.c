@@ -8,13 +8,22 @@
 
 #define SOUP_URI_SCHEME_DVB     _SOUP_ATOMIC_INTERN_STRING (_SOUP_URI_SCHEME_HTTP, "dvb")
 
+void usage(char *argv0)
+{
+    printf("Usage: %s [URL]\n", argv0);
+}
 
 int main(int argc, char *argv[])
 {
     SoupURI *uri;
 
-    const char in_uri[] = "dvb://0?freq=706000&bandwidth=8&serviceid=1101";
+    if (argc != 2)
+    {
+        usage(argv[0]);
+        return -1;
+    }
 
+    const char *in_uri = argv[1];
 
     uri = soup_uri_new(in_uri);
 
@@ -35,7 +44,7 @@ int main(int argc, char *argv[])
          token != NULL;
          token = strtok_r(NULL, "&", &state))
     {
-        printf("Token: %s [State: %s]\n", token, state);
+        printf("\tToken: %s [State: %s]\n", token, state);
     }
     g_free(str);
 
